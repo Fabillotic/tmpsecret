@@ -23,3 +23,8 @@ Otherwise it will attempt to decrypt the file with the given password.
 
 If the file already exists, once you enter the command and enter your password, ```vim``` will open and saving+exiting will bring you back to the program which will reencrypt your file.
 If you are making a new file, then you will see ```New file created.``` and you can retype the command to access this new file.
+
+## Word of caution
+People on your machine that are allowed to access this temporary file will be able to see the plaintext!
+This program is meant to protect your files when the program is no longer actively running.
+After vim is closed, the temp file will be removed.
