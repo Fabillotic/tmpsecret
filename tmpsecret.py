@@ -42,7 +42,6 @@ def main():
 		subprocess.run(["vim", tmp.name])
 		tmp.seek(0)
 		td = tmp.read()
-		print(td)
 		d_out = encrypt(key, td)
 		f = open(fn, "wb")
 		f.write(d_out)
