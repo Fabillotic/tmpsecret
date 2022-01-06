@@ -1,4 +1,5 @@
 build
 dist
 *.spec
+*.swp
 __pycache__
