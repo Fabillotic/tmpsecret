@@ -17,6 +17,10 @@ def main():
     fn = args.get("file").absolute()
     emode = args.get("encrypt")
     
+    if not (fn.exists() and fn.is_file()):
+        print("Invalid file!")
+        return
+    
     pwd = getpass().encode("utf-8")
     key = SHA3_256.new(pwd).digest()
     
@@ -24,7 +28,7 @@ def main():
     d = f.read()
     f.close()
     
-    if emode and fn.exists() and fn.is_file():
+    if emode:
         if getpass("Please retype the password: ").encode("utf-8") != pwd:
             print("Passwords don't match!")
             return
@@ -33,9 +37,6 @@ def main():
         f.write(d_out)
         f.close()
         print("File encrypted.")
-        return
-    elif emode:
-        print("Not a file!")
         return
     
     pt = decrypt(key, d)
@@ -49,12 +50,14 @@ def main():
         subprocess.run(["vim", tmp.name])
         tmp.seek(0)
         td = tmp.read()
-        d_out = encrypt(key, td)
-        f = open(fn, "wb")
-        f.write(d_out)
-        f.close()
-    
-    print("Encrypted.")
+        if td != pt:
+            d_out = encrypt(key, td)
+            f = open(fn, "wb")
+            f.write(d_out)
+            f.close()
+            print("Encrypted.")
+        else:
+            print("Did not re-encrypt: File unchanged")
 
 def encrypt(key, d):
     d_out = b""
